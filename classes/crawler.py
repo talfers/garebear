@@ -59,7 +59,7 @@ class Crawler:
                     soup = parser.make_soup(driver.page_source)
                     rows = soup.find_all("div", {"class": "rec-grid-row"})
                     print(rows)
-                    sites_dict = parser.parse_table_data(rows)
+                    sites_dict = parser.parse_district_table_data(rows)
                     # with open(f"{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
                     #     json.dump(sites_dict, outfile, indent=4, sort_keys=True)
 

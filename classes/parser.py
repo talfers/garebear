@@ -58,5 +58,5 @@ class Parser:
         #         sites.append(site_dict)
         # return sites
 
-    def parse_districts_table_data(self, rows):
+    def parse_district_table_data(self, rows):
         print("blah")
