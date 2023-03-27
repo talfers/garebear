@@ -13,9 +13,9 @@ class Crawler:
     def __init__(self):
         self.url = "https://www.recreation.gov/permits"
         self.driver = None
-        self.numPeopleButtonId = "guest-counter-QuotaUsageByMember"
-        self.numPeopleInputId = "guest-counter-QuotaUsageByMember-number-field-People"
-        self.districtPickerClass = "district-picker-section"
+        self.num_people_button_id = "guest-counter-QuotaUsageByMember"
+        self.num_people_input_id = "guest-counter-QuotaUsageByMember-number-field-People"
+        self.district_picker_class = "district-picker-section"
 
     def start_driver(self):
         driver = webdriver.Firefox()
@@ -26,9 +26,9 @@ class Crawler:
         return driver
 
     def input_num_people(self, driver, num_people):
-        people_button = driver.find_element("id", self.numPeopleButtonId)
+        people_button = driver.find_element("id", self.num_people_button_id)
         people_button.click()
-        people_input = driver.find_element("id", self.numPeopleInputId)
+        people_input = driver.find_element("id", self.num_people_input_id)
         people_input.send_keys(str(num_people))
         people_button.click()
         return driver
@@ -52,7 +52,7 @@ class Crawler:
             
             logger.warning(f"Couldnt find num people input!! Error: {e}")
             try:
-                district_picker = driver.find_element(By.CLASS_NAME, self.districtPickerClass)
+                district_picker = driver.find_element(By.CLASS_NAME, self.district_picker_class)
                 btns = district_picker.find_elements(By.TAG_NAME, 'button')
                 for btn in btns:
                     btn.click()
