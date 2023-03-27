@@ -16,7 +16,7 @@ try:
             permits = rec.create_permit_objects(config.permits)
             for p in permits:
                 driver = crawler.start_driver()
-                driver = crawler.get_url(driver, p.id, p.start_date)
+                driver = crawler.get_permit_url(driver, p.id, p.start_date)
                 crawler.get_availiabilty_data(driver, p)
                         
         except Exception as e:

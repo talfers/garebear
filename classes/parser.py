@@ -8,10 +8,12 @@ class Parser:
     def __init__(self):
         pass
 
+
     def make_soup(self, page_source):
         soup = BeautifulSoup(page_source, features="html.parser")
         return soup
     
+
     def parse_dates_table_data(self, rows):
         sites = []
         for site in rows:
@@ -56,7 +58,8 @@ class Parser:
         #                 site_dict["dates"].append({"date": date, "value": int(content)})
         #     if site_dict['name'] != "" and len(site_dict['dates']) > 0:
         #         sites.append(site_dict)
-        # return sites
+        return sites
+
 
     def parse_district_table_data(self, rows):
         print("blah")

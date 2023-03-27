@@ -17,13 +17,16 @@ class Crawler:
         self.num_people_input_id = "guest-counter-QuotaUsageByMember-number-field-People"
         self.district_picker_class = "district-picker-section"
 
+
     def start_driver(self):
         driver = webdriver.Firefox()
         return driver
     
-    def get_url(self, driver, site_id, date):
-        driver.get(f'{self.url}/{site_id}/registration/detailed-availability?date={date}')
+
+    def get_permit_url(self, driver, permit_id, date):
+        driver.get(f'{self.url}/{permit_id}/registration/detailed-availability?date={date}')
         return driver
+
 
     def input_num_people(self, driver, num_people):
         people_button = driver.find_element("id", self.num_people_button_id)
@@ -32,6 +35,7 @@ class Crawler:
         people_input.send_keys(str(num_people))
         people_button.click()
         return driver
+
 
     def get_availiabilty_data(self, driver, p):
 
@@ -59,7 +63,7 @@ class Crawler:
                     soup = parser.make_soup(driver.page_source)
                     rows = soup.find_all("div", {"class": "rec-grid-row"})
                     print(rows)
-                    sites_dict = parser.parse_district_table_data(rows)
+                    # sites_dict = parser.parse_district_table_data(rows)
                     # with open(f"{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
                     #     json.dump(sites_dict, outfile, indent=4, sort_keys=True)
 
@@ -72,9 +76,9 @@ class Crawler:
                 soup = parser.make_soup(driver.page_source)
                 rows = soup.find_all("div", {"class": "rec-grid-row"})
                 print(rows)
-                sites_dict = parser.parse_dates_table_data(rows)
-                with open(f"{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
-                    json.dump(sites_dict, outfile, indent=4, sort_keys=True)
+                # sites_dict = parser.parse_dates_table_data(rows)
+                # with open(f"{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
+                #     json.dump(sites_dict, outfile, indent=4, sort_keys=True)
 
         
         

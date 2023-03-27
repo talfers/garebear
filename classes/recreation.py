@@ -8,6 +8,7 @@ class Recreation:
     def __init__(self):
         pass
 
+
     def create_permit_objects(self, permits):
         permit_objects = []
         for p in permits:
