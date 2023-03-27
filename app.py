@@ -17,7 +17,7 @@ try:
             for p in permits:
                 driver = crawler.start_driver()
                 driver = crawler.get_url(driver, p.id, p.start_date)
-                crawler.get_availiabilty_data(driver, p.num_people)
+                crawler.get_availiabilty_data(driver, p)
                         
         except Exception as e:
                 logger.error(e)
