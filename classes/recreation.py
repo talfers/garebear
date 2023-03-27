@@ -2,7 +2,7 @@ from log import logging
 from classes.permit import Permit
 
 
-logger = logging.getLogger('Recreation')
+logger = logging.getLogger('recreation.py')
 
 class Recreation:
     def __init__(self):

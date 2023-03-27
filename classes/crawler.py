@@ -1,8 +1,11 @@
+from log import logging
 import json
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from classes.parser import Parser
+
+logger = logging.getLogger('crawler.py')
 
 parser = Parser()
 
@@ -36,10 +39,10 @@ class Crawler:
         
         try:
             self.input_num_people(driver, p.num_people)
-            soup = parser.makeSoup(driver.page_source)
+            soup = parser.make_soup(driver.page_source)
             rows = soup.find_all("div", {"class": "rec-grid-row"})
             print(rows)
-            # sites_dict = parser.parseTableData(rows)
+            # sites_dict = parser.parse_single_table_data(rows)
             # with open(f"{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
             #     json.dump(sites_dict, outfile, indent=4, sort_keys=True)
             
@@ -47,16 +50,16 @@ class Crawler:
 
             ## CONDITION 2 - DISTRICT PICKER BUTTONS THEN DOWNLOAD TABLE DATA FOR EACH DISTRICT ##
             
-            print("Couldnt find num people input!!", e)
+            logger.warning(f"Couldnt find num people input!! Error: {e}")
             try:
                 district_picker = driver.find_element(By.CLASS_NAME, self.districtPickerClass)
                 btns = district_picker.find_elements(By.TAG_NAME, 'button')
                 for btn in btns:
-                    print(btn)
-                    # btn.click()
-                    # soup = parser.makeSoup(driver.page_source)
-                    # rows = soup.find_all("div", {"class": "rec-grid-row"})
-                    # sites_dict = parser.parseTableData(rows)
+                    btn.click()
+                    soup = parser.make_soup(driver.page_source)
+                    rows = soup.find_all("div", {"class": "rec-grid-row"})
+                    print(rows)
+                    sites_dict = parser.parse_table_data(rows)
                     # with open(f"{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
                     #     json.dump(sites_dict, outfile, indent=4, sort_keys=True)
 
@@ -64,13 +67,16 @@ class Crawler:
                 
                 ## CONDITION 3 - NO ADDITIONAL INPUT NEEDED JUST DOWNLOAD THE TABLE ##
                 
-                print("Couldnt find district picker!!", e)
+                logger.warning(f"Couldnt find district picker!! Error: {e}")
                 
-                soup = parser.makeSoup(driver.page_source)
+                soup = parser.make_soup(driver.page_source)
                 rows = soup.find_all("div", {"class": "rec-grid-row"})
-                sites_dict = parser.parseTableData(rows)
+                print(rows)
+                sites_dict = parser.parse_dates_table_data(rows)
                 with open(f"{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
                     json.dump(sites_dict, outfile, indent=4, sort_keys=True)
+
+        
         
 
 
