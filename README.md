@@ -7,9 +7,14 @@ Application used to crawl recreation.gov permit availability webpages and alert 
 ## Current updates
 Adding methods in [parser.py](https://github.com/talfers/garebear/blob/main/classes/parser.py) to parse availability data structures.
 
+## Development
+We use Makefiles to run local environment setup. The following command will setup your virutal environment, load your dependencies and get your machine ready for development:
+```shell
+make
+```
+
 ## Run application
 Currently the application is run using:
 ```shell
 python app.py
 ```
-But we will soon create Makefiles and the ability to run more easily.
