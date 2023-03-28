@@ -36,7 +36,7 @@ class Crawler:
         people_button.click()
         return driver
     
-    
+
     def input_date(self, driver, date):
         date_converted = date.strftime("%m/%d/%Y")
         date_input = driver.find_element("id", self.date_picker_id)
@@ -60,6 +60,7 @@ class Crawler:
             sites_dict = parser.parse_table_data(rows)
             with open(f"{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
                 json.dump(sites_dict, outfile, indent=4, sort_keys=True)
+            return sites_dict
             
         except Exception as e:
 
@@ -78,6 +79,7 @@ class Crawler:
                     # print(sites_dict)
                     # with open(f"{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
                     #     json.dump(sites_dict, outfile, indent=4, sort_keys=True)
+                    # return sites_dict
 
             except Exception as e:
                 
@@ -88,3 +90,4 @@ class Crawler:
                 sites_dict = parser.parse_table_data(rows)
                 with open(f"{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
                     json.dump(sites_dict, outfile, indent=4, sort_keys=True)
+                return sites_dict
