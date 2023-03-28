@@ -1,4 +1,4 @@
-import sys
+import sys, time
 from log import logging
 from classes.config import Config
 from classes.recreation import Recreation
@@ -17,8 +17,8 @@ try:
             for p in permits:
                 driver = crawler.start_driver()
                 driver = crawler.get_permit_url(driver, p.id, p.start_date)
-                crawler.get_availiabilty_data(driver, p)
-                        
+                data = crawler.get_availiabilty_data(driver, p)
+                
         except Exception as e:
                 logger.error(e)
                 exit_code = 1
