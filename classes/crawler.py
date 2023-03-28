@@ -36,6 +36,7 @@ class Crawler:
         people_button.click()
         return driver
     
+    
     def input_date(self, driver, date):
         date_converted = date.strftime("%m/%d/%Y")
         date_input = driver.find_element("id", self.date_picker_id)
