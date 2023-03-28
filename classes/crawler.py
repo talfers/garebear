@@ -12,10 +12,10 @@ parser = Parser()
 class Crawler:
     def __init__(self):
         self.url = "https://www.recreation.gov/permits"
-        self.driver = None
         self.num_people_button_id = "guest-counter-QuotaUsageByMember"
         self.num_people_input_id = "guest-counter-QuotaUsageByMember-number-field-People"
         self.district_picker_class = "district-picker-section"
+        self.date_picker_id = "jump-date"
 
 
     def start_driver(self):
@@ -35,25 +35,34 @@ class Crawler:
         people_input.send_keys(str(num_people))
         people_button.click()
         return driver
+    
+    def input_date(self, driver, date):
+        date_converted = date.strftime("%m/%d/%Y")
+        date_input = driver.find_element("id", self.date_picker_id)
+        date_input.send_keys(Keys.BACKSPACE, Keys.BACKSPACE, Keys.BACKSPACE, Keys.BACKSPACE, Keys.BACKSPACE, Keys.BACKSPACE, Keys.BACKSPACE, Keys.BACKSPACE, Keys.BACKSPACE)
+        date_input.send_keys(str(date_converted[1:]))
+        v = date_input.get_attribute("value")
+        if v != date_converted[0]:
+            date_input.send_keys(Keys.ARROW_LEFT, Keys.ARROW_LEFT ,Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.BACKSPACE, date_converted[:1] )
+        driver.implicitly_wait(200)
+        return driver
 
 
     def get_availiabilty_data(self, driver, p):
 
-        ## CONDITION 1 - GUEST NUMBER INPUT THEN DOWNLOAD TABLE DATA ##
-        
+        ## CONDITION 1 - GUEST NUMBER AND DATE INPUT THEN DOWNLOAD TABLE DATA ##
         try:
             self.input_num_people(driver, p.num_people)
+            self.input_date(driver, p.start_datetime)
             soup = parser.make_soup(driver.page_source)
             rows = soup.find_all("div", {"class": "rec-grid-row"})
-            print(rows)
-            # sites_dict = parser.parse_single_table_data(rows)
-            # with open(f"{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
-            #     json.dump(sites_dict, outfile, indent=4, sort_keys=True)
+            sites_dict = parser.parse_table_data(rows)
+            with open(f"{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
+                json.dump(sites_dict, outfile, indent=4, sort_keys=True)
             
         except Exception as e:
 
             ## CONDITION 2 - DISTRICT PICKER BUTTONS THEN DOWNLOAD TABLE DATA FOR EACH DISTRICT ##
-            
             logger.warning(f"Couldnt find num people input!! Error: {e}")
             try:
                 district_picker = driver.find_element(By.CLASS_NAME, self.district_picker_class)
@@ -62,49 +71,19 @@ class Crawler:
                     btn.click()
                     soup = parser.make_soup(driver.page_source)
                     rows = soup.find_all("div", {"class": "rec-grid-row"})
-                    print(rows)
-                    # sites_dict = parser.parse_district_table_data(rows)
+                    print("DISTRICT PICKER")
+                    # print(rows)
+                    # sites_dict = parser.parse_table_data(rows)
+                    # print(sites_dict)
                     # with open(f"{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
                     #     json.dump(sites_dict, outfile, indent=4, sort_keys=True)
 
             except Exception as e:
                 
                 ## CONDITION 3 - NO ADDITIONAL INPUT NEEDED JUST DOWNLOAD THE TABLE ##
-                
                 logger.warning(f"Couldnt find district picker!! Error: {e}")
-                
                 soup = parser.make_soup(driver.page_source)
                 rows = soup.find_all("div", {"class": "rec-grid-row"})
-                print(rows)
-                # sites_dict = parser.parse_dates_table_data(rows)
-                # with open(f"{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
-                #     json.dump(sites_dict, outfile, indent=4, sort_keys=True)
-
-        
-        
-
-
-    
-    
-    ##############################
-    ##############################
-    
-    
-
-    # def check_rec_bookings(self, p):
-    #     print(p.end_datetime)
-        # crawler.getUrl(f['id'], f[start_date])
-        # crawler.loop_districts(f['num_people'])
-        ######
-        # crawler.inputData(num_people)
-        # soup = crawler.makeSoup()
-        # rows = soup.find_all("div", {"class": "rec-grid-row"})
-        # sites_dict = crawler.parseTableData(rows)
-        # with open("all_campsites.json", "w") as outfile:
-        #     json.dump(sites_dict, outfile, indent=4, sort_keys=True)
-        # check_history = self.parse_booking_data(sites_dict)
-        # break
-        # return check_history
-
-    
-    
+                sites_dict = parser.parse_table_data(rows)
+                with open(f"{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
+                    json.dump(sites_dict, outfile, indent=4, sort_keys=True)
