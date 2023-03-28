@@ -5,7 +5,7 @@ Application used to crawl recreation.gov permit availability webpages and alert 
 [Parser](https://github.com/talfers/garebear/tree/parser)
 
 ## Current updates
-Adding methods in [parser.py](https://github.com/talfers/garebear/classes/parser.py) to parse availability data structures.
+Adding methods in [parser.py](https://github.com/talfers/garebear/blob/main/classes/parser.py) to parse availability data structures.
 
 ## Run application
 Currently the application is run using:
