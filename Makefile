@@ -15,24 +15,23 @@ update_requirements_txt: setup_local_dev
 	  pipreqs --force  ./ && \
 	  pip --isolated install -r requirements.txt
 
-# Creates a python virtual environment (venv).  If it exists nothing happens. 
+# Creates a python virtual environment (venv). If it exists nothing happens. 
 create_venv:
 	@echo "Creating a python virtual environment (venv)" 
 	python3 -m venv venv
 
-# Creates a python virtual environment (venv) and installs pip moduels requried to 
-# run the app and run tests.
+# Creates a python virtual environment (venv) and installs pip moduels requried to run app
 setup_local_dev: create_venv
 	@echo "Installing all the pip things" 
 	source venv/bin/activate && \
 	  pip --isolated install --upgrade pip && \
 	  pip install pipreqs && \
-	  pip --isolated install -r requirements.txt && \
-	  pip --isolated install -r tests/requirements.txt 
+	  pip --isolated install -r requirements.txt
 
 	@echo "#### User Instructions ####"
 	@echo "To activate type 'source venv/bin/activate'"
 	@echo "To deactivate type 'deactivate'"
 
+# Builds docker image
 build_docker:
 	@docker build --rm -q -t ${NAME}:${VERSION} .
