@@ -1,5 +1,5 @@
 from log import logging
-import json
+import json, time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -45,7 +45,8 @@ class Crawler:
         v = date_input.get_attribute("value")
         if v != date_converted[0]:
             date_input.send_keys(Keys.ARROW_LEFT, Keys.ARROW_LEFT ,Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.BACKSPACE, date_converted[:1] )
-        driver.implicitly_wait(200)
+        date_input.send_keys(Keys.TAB)
+        time.sleep(1.25)
         return driver
 
 
@@ -58,7 +59,7 @@ class Crawler:
             soup = parser.make_soup(driver.page_source)
             rows = soup.find_all("div", {"class": "rec-grid-row"})
             sites_dict = parser.parse_table_data(rows)
-            with open(f"{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
+            with open(f"./data/{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
                 json.dump(sites_dict, outfile, indent=4, sort_keys=True)
             return sites_dict
             
@@ -75,7 +76,7 @@ class Crawler:
                     soup = parser.make_soup(driver.page_source)
                     rows = soup.find_all("div", {"class": "rec-grid-row"})
                     sites_dict = parser.parse_table_data(rows)
-                    with open(f"{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
+                    with open(f"./data/{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
                         json.dump(sites_dict, outfile, indent=4, sort_keys=True)
                     district_dicts.append(sites_dict)
                 return district_dicts
@@ -88,7 +89,7 @@ class Crawler:
                     soup = parser.make_soup(driver.page_source)
                     rows = soup.find_all("div", {"class": "rec-grid-row"})
                     sites_dict = parser.parse_table_data(rows)
-                    with open(f"{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
+                    with open(f"./data/{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
                         json.dump(sites_dict, outfile, indent=4, sort_keys=True)
                     return sites_dict
                 except Exception as e:
