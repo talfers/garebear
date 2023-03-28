@@ -69,25 +69,27 @@ class Crawler:
             try:
                 district_picker = driver.find_element(By.CLASS_NAME, self.district_picker_class)
                 btns = district_picker.find_elements(By.TAG_NAME, 'button')
+                district_dicts = []
                 for btn in btns:
                     btn.click()
                     soup = parser.make_soup(driver.page_source)
                     rows = soup.find_all("div", {"class": "rec-grid-row"})
-                    print("DISTRICT PICKER")
-                    # print(rows)
-                    # sites_dict = parser.parse_table_data(rows)
-                    # print(sites_dict)
-                    # with open(f"{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
-                    #     json.dump(sites_dict, outfile, indent=4, sort_keys=True)
-                    # return sites_dict
+                    sites_dict = parser.parse_table_data(rows)
+                    with open(f"{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
+                        json.dump(sites_dict, outfile, indent=4, sort_keys=True)
+                    district_dicts.append(sites_dict)
+                return district_dicts
 
             except Exception as e:
-                
+
                 ## CONDITION 3 - NO ADDITIONAL INPUT NEEDED JUST DOWNLOAD THE TABLE ##
                 logger.warning(f"Couldnt find district picker!! Error: {e}")
-                soup = parser.make_soup(driver.page_source)
-                rows = soup.find_all("div", {"class": "rec-grid-row"})
-                sites_dict = parser.parse_table_data(rows)
-                with open(f"{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
-                    json.dump(sites_dict, outfile, indent=4, sort_keys=True)
-                return sites_dict
+                try:
+                    soup = parser.make_soup(driver.page_source)
+                    rows = soup.find_all("div", {"class": "rec-grid-row"})
+                    sites_dict = parser.parse_table_data(rows)
+                    with open(f"{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
+                        json.dump(sites_dict, outfile, indent=4, sort_keys=True)
+                    return sites_dict
+                except Exception as e:
+                    logger.error(f'Error getting avaliability data! Error: {e}')
