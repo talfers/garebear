@@ -13,7 +13,9 @@ class Crawler:
     def __init__(self):
         self.url = "https://www.recreation.gov/permits"
         self.num_people_button_id = "guest-counter-QuotaUsageByMember"
+        self.num_people_button_id_2 = "guest-counter"
         self.num_people_input_id = "guest-counter-QuotaUsageByMember-number-field-People"
+        self.num_people_input_id_2 = "guest-counter-number-field-People"
         self.district_picker_class = "district-picker-section"
         self.date_picker_id = "jump-date"
 
@@ -26,71 +28,69 @@ class Crawler:
     def get_permit_url(self, driver, permit_id, date):
         driver.get(f'{self.url}/{permit_id}/registration/detailed-availability?date={date}')
         return driver
+    
+
+    def get_district_buttons(self, driver):
+        btns = []
+        district_picker = driver.find_elements(By.XPATH, f"//div[@class='{self.district_picker_class}']")
+        if len(district_picker) > 0:
+            btns = district_picker[0].find_elements(By.TAG_NAME, 'button')
+        return btns
 
 
     def input_num_people(self, driver, num_people):
-        people_button = driver.find_element("id", self.num_people_button_id)
-        people_button.click()
-        people_input = driver.find_element("id", self.num_people_input_id)
-        people_input.send_keys(str(num_people))
-        people_button.click()
+        num_people_buttons = driver.find_elements(By.XPATH, f"//button[@id='{self.num_people_button_id}' or @id='{self.num_people_button_id_2}']")
+        if len(num_people_buttons) > 0:
+            num_people_buttons[0].click()
+        num_people_inputs = driver.find_elements(By.XPATH, f"//input[@id='{self.num_people_input_id}' or @id='{self.num_people_input_id_2}']")
+        if len(num_people_inputs) > 0:
+            num_people_inputs[0].send_keys(str(num_people))
+            num_people_buttons[0].click()
         return driver
     
 
-    def input_date(self, driver, date):
+    def input_date(self, driver, date):   
         date_converted = date.strftime("%m/%d/%Y")
-        date_input = driver.find_element("id", self.date_picker_id)
-        date_input.send_keys(Keys.BACKSPACE, Keys.BACKSPACE, Keys.BACKSPACE, Keys.BACKSPACE, Keys.BACKSPACE, Keys.BACKSPACE, Keys.BACKSPACE, Keys.BACKSPACE, Keys.BACKSPACE)
-        date_input.send_keys(str(date_converted[1:]))
-        v = date_input.get_attribute("value")
-        if v != date_converted[0]:
-            date_input.send_keys(Keys.ARROW_LEFT, Keys.ARROW_LEFT ,Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.BACKSPACE, date_converted[:1] )
-        date_input.send_keys(Keys.TAB)
-        time.sleep(1.25)
+        date_inputs = driver.find_elements(By.XPATH, f"//input[@id='{self.date_picker_id}']")
+        if len(date_inputs) > 0:
+            date_inputs[0].send_keys(Keys.BACKSPACE, Keys.BACKSPACE, Keys.BACKSPACE, Keys.BACKSPACE, Keys.BACKSPACE, Keys.BACKSPACE, Keys.BACKSPACE, Keys.BACKSPACE, Keys.BACKSPACE)
+            date_inputs[0].send_keys(str(date_converted[1:]))
+            v = date_inputs[0].get_attribute("value")
+            if v != date_converted[0]:
+                date_inputs[0].send_keys(Keys.ARROW_LEFT, Keys.ARROW_LEFT ,Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.ARROW_LEFT, Keys.BACKSPACE, date_converted[:1] )
+            date_inputs[0].send_keys(Keys.TAB)
+            time.sleep(1.25)
         return driver
 
 
     def get_availiabilty_data(self, driver, p):
 
-        ## CONDITION 1 - GUEST NUMBER AND DATE INPUT THEN DOWNLOAD TABLE DATA ##
         try:
             self.input_num_people(driver, p.num_people)
             self.input_date(driver, p.start_datetime)
-            soup = parser.make_soup(driver.page_source)
-            rows = soup.find_all("div", {"class": "rec-grid-row"})
-            sites_dict = parser.parse_table_data(rows)
-            with open(f"./data/{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
-                json.dump(sites_dict, outfile, indent=4, sort_keys=True)
-            return sites_dict
-            
-        except Exception as e:
-
-            ## CONDITION 2 - DISTRICT PICKER BUTTONS THEN DOWNLOAD TABLE DATA FOR EACH DISTRICT ##
-            logger.warning(f"Couldnt find num people input!! Error: {e}")
-            try:
-                district_picker = driver.find_element(By.CLASS_NAME, self.district_picker_class)
-                btns = district_picker.find_elements(By.TAG_NAME, 'button')
-                district_dicts = []
-                for btn in btns:
+            district_btns = self.get_district_buttons(driver)
+            if len(district_btns) > 0:
+                all_districts_list = []
+                for btn in district_btns:
+                    district = btn.get_attribute("name")
+                    district_dict = { 'name': district, 'sites': [] }
                     btn.click()
                     soup = parser.make_soup(driver.page_source)
                     rows = soup.find_all("div", {"class": "rec-grid-row"})
-                    sites_dict = parser.parse_table_data(rows)
-                    with open(f"./data/{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
-                        json.dump(sites_dict, outfile, indent=4, sort_keys=True)
-                    district_dicts.append(sites_dict)
-                return district_dicts
+                    # sites_dict = parser.parse_table_data(rows)
+                    # district_dict['sites'].extend(sites_dict)
+                #     all_districts_list.append(district_dict)
+                # with open(f"./data/{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
+                #     json.dump(all_districts_list, outfile, indent=4, sort_keys=True)
 
-            except Exception as e:
-
-                ## CONDITION 3 - NO ADDITIONAL INPUT NEEDED JUST DOWNLOAD THE TABLE ##
-                logger.warning(f"Couldnt find district picker!! Error: {e}")
-                try:
-                    soup = parser.make_soup(driver.page_source)
-                    rows = soup.find_all("div", {"class": "rec-grid-row"})
-                    sites_dict = parser.parse_table_data(rows)
-                    with open(f"./data/{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
-                        json.dump(sites_dict, outfile, indent=4, sort_keys=True)
-                    return sites_dict
-                except Exception as e:
-                    logger.error(f'Error getting avaliability data! Error: {e}')
+            else:
+                soup = parser.make_soup(driver.page_source)
+                rows = soup.find_all("div", {"class": "rec-grid-row"})
+                sites_dict = parser.parse_table_data(rows)
+                with open(f"./data/{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
+                    json.dump(sites_dict, outfile, indent=4, sort_keys=True)
+                return sites_dict
+            
+        except Exception as e:
+            logger.error(f"Error parsing table!! Error: {e}")
+            
