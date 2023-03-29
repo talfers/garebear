@@ -18,6 +18,7 @@ try:
                 driver = crawler.start_driver()
                 driver = crawler.get_permit_url(driver, p.id, p.start_date)
                 data = crawler.get_availiabilty_data(driver, p)
+                driver.quit()
                 
         except Exception as e:
                 logger.error(e)
