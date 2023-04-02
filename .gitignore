@@ -5,3 +5,4 @@ secrets.env
 geckodriver.log
 *.json
 data/*.json
+*log.pyc
