@@ -1,7 +1,6 @@
 from log import logging
-import json, time
+import json
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from classes.parser import Parser
 from selenium.webdriver.support.ui import Select
@@ -56,13 +55,9 @@ class Crawler:
             self.get_division_selection(driver, p.section)
             self.get_people_input(driver)
             self.get_next_availiable(driver)
-            # soup = parser.make_soup(driver.page_source)
-            # calendar = soup.find_all("div", {"class": "permit-availability-calendar"})
-            # print(calendar)
-            # sites_dict = parser.parse_calendar_data(rows)
-            # with open(f"./data/{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
-            #     json.dump(sites_dict, outfile, indent=4, sort_keys=True)
-            # return sites_dict
-
+            availiability_json = parser.parse_calendar_data('')
+            with open(f"./data/{p.id}.{p.section}.{p.start_date}.{p.end_date}.json", "w") as outfile:
+                json.dump(availiability_json, outfile, indent=4, sort_keys=True)
+            return availiability_json
         except Exception as e:
             logger.error(f"Error parsing table!! Error: {e}")

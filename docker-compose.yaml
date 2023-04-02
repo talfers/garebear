@@ -1,0 +1,11 @@
+version: '3'
+services:
+  garebear:
+    build:
+      dockerfile: Dockerfile
+      context: ./
+    env_file: ./secrets.env
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/etc/gcp_creds.json
+    volumes:
+      - ./gcp_creds.json:/etc/gcp_account.json

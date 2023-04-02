@@ -1,9 +1,10 @@
-import sys, time
+import sys
 from log import logging
 from classes.config import Config
 from classes.recreation import Recreation
 from classes.crawler import Crawler
 from classes.sheets import Sheets
+from classes.parser import Parser
 
 logger = logging.getLogger('main')
 exit_code = 0
@@ -13,6 +14,7 @@ try:
         rec = Recreation()
         crawler = Crawler()
         sheets = Sheets('rec_gov_permits')
+        parser = Parser()
 
         try:
             permits_df = sheets.get_tab_as_df('permits')

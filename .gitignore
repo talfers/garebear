@@ -6,4 +6,4 @@ geckodriver.log
 *.json
 data/*.json
 *log.pyc
-garebear-382519-ca75277f19dc.json
+gcp_creds.json
