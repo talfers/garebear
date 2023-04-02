@@ -6,16 +6,19 @@ logger = logging.getLogger('recreation.py')
 
 class Recreation:
     def __init__(self):
-        pass
+        self.num_people = 2
+        
 
 
-    def create_permit_objects(self, permits):
+    def create_permit_objects(self, permits_df):
         permit_objects = []
-        for p in permits:
+        for row in permits_df.itertuples():
+            url = getattr(row, 'url')
+            id = url[url.find('permits/')+8:]
             try:
-                permit_objects.append(Permit(p['id'], p['start_date'], p['end_date'], p['num_people'], p['section']))
+                permit_objects.append(Permit(id, getattr(row, 'name'), getattr(row, 'start'), getattr(row, 'end'), self.num_people, getattr(row, 'section')))
             except Exception as e:
-                raise Exception(f'Error creating permit objects. Error: {e}')
+                logger.error(e)
         return permit_objects
 
 
