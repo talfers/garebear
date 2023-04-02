@@ -57,8 +57,9 @@ class Crawler:
             self.get_people_input(driver)
             self.get_next_availiable(driver)
             # soup = parser.make_soup(driver.page_source)
-            # rows = soup.find_all("div", {"class": "rec-grid-row"})
-            # sites_dict = parser.parse_table_data(rows)
+            # calendar = soup.find_all("div", {"class": "permit-availability-calendar"})
+            # print(calendar)
+            # sites_dict = parser.parse_calendar_data(rows)
             # with open(f"./data/{p.id}.{p.start_date}.{p.end_date}.json", "w") as outfile:
             #     json.dump(sites_dict, outfile, indent=4, sort_keys=True)
             # return sites_dict

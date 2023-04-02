@@ -38,3 +38,6 @@ class Parser:
         #     if site_dict['name'] != "" and len(site_dict['dates']) > 0:
         #         sites.append(site_dict)
         # return sites
+
+
+    def match_dates(self, dates):
