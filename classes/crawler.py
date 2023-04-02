@@ -40,7 +40,7 @@ class Crawler:
     def get_people_input(self, driver):
         people_input = driver.find_elements(By.XPATH, f"//input[@id='{self.people_input}']")
         if len(people_input) > 0:
-            num_people_inputs[0].send_keys(str(2))
+            people_input[0].send_keys(str(2))
         return driver
 
 
