@@ -30,7 +30,7 @@ try:
                 logger.info(p.availiable_dates)
                 if len(p.availiable_dates) > 0:
                       message = texter.createMessageBody(p)
-                      texter.sendMessage('+13166485007', message)
+                      texter.sendMessage('+16205443039', message)
                 driver.quit()
 
         except Exception as e:

@@ -26,7 +26,7 @@ class Texter:
 
     def createMessageBody(self, p):
         rendered = ""
-        with open('./email.j2') as f:
+        with open('./message.j2') as f:
             rendered = Template(
                 f.read(), 
                 trim_blocks=True, 
