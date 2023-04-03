@@ -3,11 +3,10 @@ Garrebear,
 This is your friends Gabriel-bot and Taylor-tron. We are delighted to inform you that these dates have been found within your desired criteria for the below permit:
 
 
-Permit: {{p.id}}
+Permit: {{p.name}}
 {% if p.section %}
 Section: {{p.section}}
 {% endif %}
-
 {% for check in p.availiable_dates %}
     {{ check.date }}
 {% endfor %}
