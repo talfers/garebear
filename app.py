@@ -27,10 +27,10 @@ try:
                 data = crawler.get_availiabilty_data(driver, p)
                 availiable_dates = parser.get_dates(data, p, blackout_dates)
                 p.availiable_dates = availiable_dates
-                print("AVAIL DATES", p.availiable_dates)
+                logger.info(p.availiable_dates)
                 if len(p.availiable_dates) > 0:
                       message = texter.createMessageBody(p)
-                      texter.sendMessage('+13162136004', message)
+                      texter.sendMessage('+13166485007', message)
                 driver.quit()
 
         except Exception as e:

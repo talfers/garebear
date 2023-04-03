@@ -3,7 +3,6 @@
 venv
 secrets.env
 geckodriver.log
-*.json
 data/*.json
 *log.pyc
 gcp_creds.json
