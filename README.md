@@ -1,5 +1,5 @@
 # Permit Crawler
-Application used to crawl recreation.gov permit availability webpages and alert when specified permits are available during desired time periods.
+Application used to crawl [recreation.gov](https://www.recreation.gov/) permit availability webpages and alert when desired permits are available during specific time periods.
 
 
 ## Environment setup
