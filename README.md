@@ -25,10 +25,10 @@ pip install -r requirements.txt
 You will also need to configure all needed secrets to access external APIs. There are two sets of credentials that must be configured to run this application:
 
 #### Google Cloud
-1. You will need a json credentials file from [Google Cloud](https://cloud.google.com/) to connect to [Google Sheets](https://sheets.google.com/). This will need to be saved in the [root directory](https://github.com/talfers/garebear/) and must be called `gcp_creds.json`. See this [example file](https://github.com/talfers/garebear/blob/main/gcp_creds.example.json) for more details.
+1. You will need a json credentials file from [Google Cloud](https://cloud.google.com/) to connect to [Google Sheets](https://sheets.google.com/). This will need to be saved in the [root directory](https://github.com/talfers/garebear/) and must be named `gcp_creds.json`. See this [example file](https://github.com/talfers/garebear/blob/main/gcp_creds.example.json) for more details.
 
 #### Twilio
-2. You will need a [Twilio](https://www.twilio.com/) account to send text messages. To set this up go to [twilio.com](https://www.twilio.com). Once you have an account, you must copy your `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, and `TWILIO_PHONE_NUMBER` into the a file called `secrets.env`. See this [example file](https://github.com/talfers/garebear/blob/main/secrets.example.env) for details.
+2. You will need a [Twilio](https://www.twilio.com/) account to send text messages. To set this up go to [twilio.com](https://www.twilio.com). Once you have an account, you must copy your `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, and `TWILIO_PHONE_NUMBER` into a file named `secrets.env`. See this [example file](https://github.com/talfers/garebear/blob/main/secrets.example.env) for more details.
 
 
 ## Run application
