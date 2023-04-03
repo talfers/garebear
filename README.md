@@ -1,5 +1,5 @@
 # Permit Crawler
-Application used to crawl [recreation.gov](https://www.recreation.gov/) permit availability webpages and alert when desired permits are available during specific time periods.
+Application used to crawl [recreation.gov](https://www.recreation.gov/) permit availability webpages and alert when desired permits are available during time periods specified in [this Google Sheet](https://docs.google.com/spreadsheets/d/1Fv0ut4FTRywssG2naRxMQmxX5Ax-7MCqU7PuDiO4hy8/edit?usp=sharing).
 
 
 ## Environment setup
@@ -28,7 +28,7 @@ You will also need to configure all needed secrets to access external APIs. Ther
 1. You will need a json credentials file from [Google Cloud](https://cloud.google.com/) to connect to [Google Sheets](https://sheets.google.com/). This will need to be saved in the [root directory](https://github.com/talfers/garebear/) and must be called `gcp_creds.json`. See this [example file](https://github.com/talfers/garebear/blob/main/gcp_creds.example.json) for more details.
 
 #### Twilio
-2. You will need a [Twilio](https://www.twilio.com/) account to send text messages. To set this up go to [twilio.com](https://www.twilio.com). Once you have an account, you will need a `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, and `TWILIO_PHONE_NUMBER`. See this [example file](https://github.com/talfers/garebear/blob/main/secrets.example.env) for details.
+2. You will need a [Twilio](https://www.twilio.com/) account to send text messages. To set this up go to [twilio.com](https://www.twilio.com). Once you have an account, you must copy your `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, and `TWILIO_PHONE_NUMBER` into the a file called `secrets.env`. See this [example file](https://github.com/talfers/garebear/blob/main/secrets.example.env) for details.
 
 
 ## Run application
