@@ -16,12 +16,7 @@ try:
         crawler = Crawler()
         sheets = Sheets('rec_gov_permits')
         parser = Parser()
-        texter = Texter(
-                config.twilio_account_sid, 
-                config.twilio_auth_token, 
-                config.twilio_phone_number
-        )
-
+        texter = Texter(config.twilio_account_sid, config.twilio_auth_token, config.twilio_phone_number)
         try:
             permits_df = sheets.get_tab_as_df('permits')
             blackout_dates = sheets.get_tab_as_df('blackout_dates')['dates'].tolist()
