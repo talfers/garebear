@@ -7,17 +7,17 @@ In order to run and develop this application, you will need to create a virtual 
 
 
 #### Create your virtual env
-```python
+```shell
 python3 -m venv venv
 ```
 
 #### Activate your virtual env
-```python
+```shell
 source venv/bin/activate
 ```
 
 #### Install all dependencies
-```python
+```shell
 pip install -r requirements.txt
 ```
 
@@ -33,6 +33,6 @@ You will also need to configure all needed secrets to access external APIs. Ther
 
 ## Run application
 Once all the above configuration is complete, you can run this applicaiton using the main file: [app.py](https://github.com/talfers/garebear/blob/main/app.py). To execute this file, run the below command:
-```python
+```shell
 python app.py
 ```
