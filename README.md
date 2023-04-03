@@ -32,7 +32,7 @@ You will also need to configure all needed secrets to access external APIs. Ther
 
 
 ## Run application
-This applicaiton can be run using the main file [app.py](https://github.com/talfers/garebear/blob/main/app.py). To execute this file, run the below command:
+This applicaiton can be run using the main file, [app.py](https://github.com/talfers/garebear/blob/main/app.py). To execute this file, run the below command:
 ```python
 python app.py
 ```
