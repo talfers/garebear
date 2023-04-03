@@ -28,9 +28,9 @@ try:
                 availiable_dates = parser.get_dates(data, p, blackout_dates)
                 p.availiable_dates = availiable_dates
                 print("AVAIL DATES", p.availiable_dates)
-                # if len(p.availiable_dates) > 0:
-                #       message = texter.createMessageBody(p)
-                #       texter.sendMessage('13162136004', message)
+                if len(p.availiable_dates) > 0:
+                      message = texter.createMessageBody(p)
+                      texter.sendMessage('+13162136004', message)
                 driver.quit()
 
         except Exception as e:

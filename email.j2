@@ -5,8 +5,8 @@ We hope this finds you well. This is your friends Gabriel-bot and Taylor-tron. W
 
 Permit {{p.id}}
 Section {{p.section}}
-{% for date in p.availiable_dates %}
-    {{ date }}
+{% for check in p.availiable_dates %}
+    {{ check.date }}
 {% endfor %}
 
 
