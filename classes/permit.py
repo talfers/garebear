@@ -11,3 +11,4 @@ class Permit:
         self.start_datetime = datetime.strptime(self.start_date, '%m/%d/%Y')
         self.end_datetime = datetime.strptime(self.end_date, '%m/%d/%Y')
         self.num_days = int((self.end_datetime - self.start_datetime).days)
+        self.availiable_dates = []

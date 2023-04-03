@@ -1,5 +1,6 @@
 from log import logging
 import json
+import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from classes.parser import Parser
@@ -30,7 +31,6 @@ class Crawler:
     def get_division_selection(self, driver, division):
         division_selector = driver.find_elements(By.XPATH, f"//select[@id='{self.division_selector}']")
         if len(division_selector) > 0:
-            print(division_selector[0])
             select = Select(division_selector[0])
             select.select_by_visible_text(division);
         return driver
@@ -48,6 +48,19 @@ class Crawler:
         if len(next_avail_button) > 0:
             next_avail_button[0].click()
         return driver
+    
+
+    def parse_calendar_data(self, driver, p):
+        df = pd.DataFrame( columns=['date'])
+        availible_days_td = driver.find_elements(By.CSS_SELECTOR, "td[class*='CalendarDay CalendarDay_1 CalendarDay__default CalendarDay__default_2']")
+        obj = {'id': p.id, 'section': p.section, 'dates': []}
+        if len(availible_days_td) > 0:
+            for i in availible_days_td:
+                g = i.get_attribute('aria-label')
+                df.loc[len(df.index)] = [g] 
+                dates = df['date'].tolist()
+            obj['dates'].extend(dates)
+        return obj
 
 
     def get_availiabilty_data(self, driver, p):
@@ -55,9 +68,9 @@ class Crawler:
             self.get_division_selection(driver, p.section)
             self.get_people_input(driver)
             self.get_next_availiable(driver)
-            availiability_json = parser.parse_calendar_data('')
-            with open(f"./data/{p.id}.{p.section}.{p.start_date}.{p.end_date}.json", "w") as outfile:
-                json.dump(availiability_json, outfile, indent=4, sort_keys=True)
+            availiability_json = self.parse_calendar_data(driver, p)
+            # with open(f"./data/{p.id}.{p.section}.{p.start_date}.{p.end_date}.json", "w") as outfile:
+            #     json.dump(availiability_json, outfile, indent=4, sort_keys=True)
             return availiability_json
         except Exception as e:
             logger.error(f"Error parsing table!! Error: {e}")

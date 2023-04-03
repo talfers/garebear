@@ -5,9 +5,8 @@ logger = logging.getLogger('sheets.py')
 
 class Sheets():
     def __init__(self, sheet_name):
-        self.gc = pygsheets.authorize(service_file='garebear-382519-ca75277f19dc.json')
+        self.gc = pygsheets.authorize(service_file='gcp_creds.json')
         self.sheet = self.gc.open(sheet_name)
-        logger.info("sheets was initialized")
 
 
     def get_tab_as_df(self, sheet_tab_name):
