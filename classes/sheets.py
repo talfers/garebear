@@ -11,8 +11,8 @@ class Sheets():
 
     def get_tab_as_df(self, sheet_tab_name):
         try:
-            self.wks = self.sheet.worksheet('title', sheet_tab_name)
-            df = self.wks.get_as_df()
+            wks = self.sheet.worksheet('title', sheet_tab_name)
+            df = wks.get_as_df()
             return df
         except Exception as e:
             raise Exception(f'Error getting google sheet! Error: {e}')
