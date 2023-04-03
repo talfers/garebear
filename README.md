@@ -3,7 +3,7 @@ Application used to crawl recreation.gov permit availability webpages and alert 
 
 
 ## Environment setup
-You will need 2 sets of credentials to run this application. 
+You will need two sets of credentials to run this application. 
 
 First, you will need a Google Cloud credentials json file to connect to google sheets. This will need to be saved in the [main project directory](https://github.com/talfers/garebear/) and must be called `gcp_creds.json`. See this [example file](https://github.com/talfers/garebear/blob/main/gcp_creds.example.json) for details.
 
