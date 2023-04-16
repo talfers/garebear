@@ -16,7 +16,7 @@ class Parser:
         return new_date_list
 
 
-    def check_dates(self, found_date, start, end, blackout_dates):
+    def check_blackout_dates(self, found_date, start, end, blackout_dates):
         blackout_datetimes = self.convert_dates(blackout_dates, '%m/%d/%Y')
         if start <= found_date <= end:
             if found_date in blackout_datetimes:
@@ -27,12 +27,12 @@ class Parser:
             return Check(found_date, False, 'Found date not within start to end date range')
         
 
-    def get_dates(self, data, p, blackout_dates):
+    def filter_dates(self, dates, p, blackout_dates):
         availiable_dates = []
-        for date in data['dates']:
+        for date in dates:
             date = datetime.strptime(date, '%A, %B %d, %Y')
             # Saturday, April 15, 2023
-            check = self.check_dates(date, p.start_datetime, p.end_datetime, blackout_dates)
+            check = self.check_blackout_dates(date, p.start_datetime, p.end_datetime, blackout_dates)
             if check.found == True:
                 availiable_dates.append(check)
         return availiable_dates

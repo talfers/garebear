@@ -1,4 +1,4 @@
-import sys
+import sys, json
 from log import logging
 from classes.config import Config
 from classes.recreation import Recreation
@@ -24,13 +24,14 @@ try:
             for p in permits:
                 driver = crawler.start_driver()
                 driver = crawler.get_permit_url(driver, p.id, p.start_date)
-                data = crawler.get_availiabilty_data(driver, p)
-                availiable_dates = parser.get_dates(data, p, blackout_dates)
+                dates = crawler.get_availiable_dates(driver, p)
+                availiable_dates = parser.filter_dates(dates, p, blackout_dates)
                 p.availiable_dates = availiable_dates
                 logger.info(p.availiable_dates)
                 if len(p.availiable_dates) > 0:
-                      message = texter.createMessageBody(p)
-                      texter.sendMessage('+16205443039', message)
+                      print('yeah buddy')
+                #       message = texter.createMessageBody(p)
+                #       texter.sendMessage('+16205443039', message)
                 driver.quit()
 
         except Exception as e:
